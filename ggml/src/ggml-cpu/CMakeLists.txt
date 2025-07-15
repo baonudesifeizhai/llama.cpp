@@ -486,7 +486,7 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         target_compile_definitions(${GGML_CPU_NAME} PRIVATE GGML_USE_CPU_REPACK)
     endif()
 
-    if (GGML_CPU_KLEIDIAI)
+    if (GGML_CPU_KLEIDIAI AND GGML_CPU_AARCH64 AND (CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64" OR CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64"))
         message(STATUS "Using KleidiAI optimized kernels if applicable")
 
         # Disable the KleidiAI tests
@@ -495,17 +495,17 @@ function(ggml_add_cpu_backend_variant_impl tag_name)
         # Fetch KleidiAI sources:
         include(FetchContent)
         set(KLEIDIAI_COMMIT_TAG "v1.9.0")
-        set(KLEIDIAI_DOWNLOAD_URL "https://github.com/ARM-software/kleidiai/archive/refs/tags/${KLEIDIAI_COMMIT_TAG}.tar.gz")
-        set(KLEIDIAI_ARCHIVE_MD5  "2a8e1bb55d201557553545536489a017")
+        set(KLEIDIAI_DOWNLOAD_URL "https://git.gitlab.arm.com/kleidi/kleidiai/-/archive/${KLEIDIAI_COMMIT_TAG}/kleidiai-${KLEIDIAI_COMMIT_TAG}.tar.gz")
+        set(KLEIDIAI_ARCHIVE_MD5  "e4c9fcb5de397ba3532d593672d56e95")
 
         if (POLICY CMP0135)
             cmake_policy(SET CMP0135 NEW)
         endif()
 
         FetchContent_Declare(KleidiAI_Download
-            URL ${KLEIDIAI_DOWNLOAD_URL}
-            DOWNLOAD_EXTRACT_TIMESTAMP NEW
-            URL_HASH MD5=${KLEIDIAI_ARCHIVE_MD5})
+            GIT_REPOSITORY https://git.gitlab.arm.com/kleidi/kleidiai.git
+            GIT_TAG ${KLEIDIAI_COMMIT_TAG}
+            GIT_SHALLOW TRUE)
 
         FetchContent_MakeAvailable(KleidiAI_Download)
         FetchContent_GetProperties(KleidiAI_Download

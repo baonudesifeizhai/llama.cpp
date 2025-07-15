@@ -103,7 +103,9 @@ static void transpose_f32kxn_f16nxk(size_t n, size_t k, float * dst, const uint1
 class tensor_traits : public ggml::cpu::tensor_traits {
     bool work_size(int /* n_threads */, const struct ggml_tensor * op, size_t & size) override {
         ggml_kleidiai_kernels *kernels = ggml_kleidiai_select_kernels(ctx.features, op);
-        GGML_ASSERT(kernels);
+        if (!kernels) {
+            return false;  // No suitable kernel available
+        }
         kernel_info * kernel = op->src[1]->ne[1] == 1 ? &kernels->gemv : &kernels->gemm;
 
         size_t k = op->src[0]->ne[0];
@@ -148,7 +150,9 @@ class tensor_traits : public ggml::cpu::tensor_traits {
         GGML_TENSOR_BINARY_OP_LOCALS
 
         ggml_kleidiai_kernels *kernels = ggml_kleidiai_select_kernels(ctx.features, dst);
-        GGML_ASSERT(kernels);
+        if (!kernels) {
+            return false;  // No suitable kernel available
+        }
 
         kernel_info * kernel = src1->ne[1] == 1 ? &kernels->gemv : &kernels->gemm;
         GGML_ASSERT(kernel);
@@ -276,7 +280,9 @@ class tensor_traits : public ggml::cpu::tensor_traits {
         GGML_TENSOR_BINARY_OP_LOCALS
 
         ggml_kleidiai_kernels *kernels = ggml_kleidiai_select_kernels(ctx.features, dst);
-        GGML_ASSERT(kernels);
+        if (!kernels) {
+            return false;  // No suitable kernel available
+        }
 
         kernel_info * kernel = src1->ne[1] == 1 ? &kernels->gemv : &kernels->gemm;
         lhs_packing_info * lhs_info = &kernels->lhs_info;
@@ -344,7 +350,9 @@ class tensor_traits : public ggml::cpu::tensor_traits {
 
 public:
     int repack(struct ggml_tensor * tensor, const void * data, size_t data_size) {
-        GGML_ASSERT(ctx.kernels);
+        if (!ctx.kernels) {
+            return -1;  // No suitable kernel available
+        }
         const size_t n = tensor->ne[1];
         const size_t k = tensor->ne[0];
         size_t nr      = ctx.kernels->gemm.get_nr();
