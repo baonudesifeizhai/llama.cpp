@@ -1,0 +1,7 @@
+[33me2c1bfff[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m opencl: add initial mxfp4 support via mv (#15270)
+[33m5edf1592[m[33m ([m[1;33mtag: [m[1;33mb6176[m[33m)[m vulkan : fix out-of-bounds access in argmax kernel (#15342)
+[33mdb3010bd[m[33m ([m[1;33mtag: [m[1;33mb6175[m[33m)[m vulkan : fix compile warnings on macos (#15340)
+[33mff27f80a[m[33m ([m[1;33mtag: [m[1;33mb6174[m[33m)[m ggml: initial IBM zDNN backend (#14975)
+[33md3248d9b[m[33m ([m[1;33mtag: [m[1;33mb6173[m[33m)[m ci : fix ios-xcode-build (#15324)
+[33m7aeee88c[m ci : move ccache action to ggml-org fork (#15328)
+[33mb07791aa[m test-opt: fix backend support check (#15317)
