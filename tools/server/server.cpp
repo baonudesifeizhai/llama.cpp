@@ -3441,7 +3441,7 @@ struct server_context {
 
                     // SLT_INF(slot, "new cache_tokens: %s\n", slot.cache_tokens.str().c_str());
 
-                    SLT_INF(slot, "prompt processing progress, n_past = %d, n_tokens = %d, progress = %f\n", slot.n_past, batch.n_tokens, (float) slot.n_prompt_tokens_processed / slot.n_prompt_tokens);
+                    SLT_INF(slot, "new tokens ratio, n_past = %d, n_tokens = %d, new_tokens_ratio = %f\n", slot.n_past, batch.n_tokens, (float) slot.n_prompt_tokens_processed / slot.n_prompt_tokens);
 
                     // entire prompt has been processed
                     if (slot.n_past == slot.n_prompt_tokens) {
